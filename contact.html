@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact – MOVIXA STREAM</title>
+<meta name="theme-color" content="#07070b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="nav solid" id="nav"><a class="logo" href="/">MOVIXA<span> STREAM</span></a><div class="sp"></div><a class="btn p sm" href="browse.html">Browse</a></header>
+<main class="legal">
+<h1>Contact Us</h1>
+<p class="upd">We usually reply within a few days.</p>
+<p>Reach us directly via <a data-site-email></a>, or use the form below.</p>
+<p><a class="btn s" id="waBtn" target="_blank" rel="noopener noreferrer">💬 Chat on WhatsApp</a></p>
+<div style="margin-top:1.4rem">
+  <div class="fld"><label for="cn">Your name</label><input id="cn" placeholder="Your name"></div>
+  <div class="fld"><label for="cs">Topic</label><select id="cs"><option>Support</option><option>Feedback</option><option>Copyright / DMCA</option><option>Business enquiry</option></select></div>
+  <div class="fld"><label for="cm">Message</label><textarea id="cm" placeholder="How can we help?"></textarea></div>
+  <div class="err" id="ce"></div>
+  <button class="btn p" id="cb" type="button">Send Message</button>
+</div>
+</main>
+<footer class="foot" id="siteFooter"></footer>
+<script src="js/config.js"></script>
+<script src="js/common.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(function () {
+  var wa = MX.waLink("Hello MOVIXA STREAM, "), b = document.getElementById("waBtn");
+  if (wa) b.href = wa; else b.hidden = true;
+  document.getElementById("cb").onclick = function () {
+    var n = document.getElementById("cn").value.trim(), m = document.getElementById("cm").value.trim(), err = document.getElementById("ce");
+    if (!m) { err.textContent = "Please write a message."; return; }
+    err.textContent = "";
+    var s = "[MOVIXA] " + document.getElementById("cs").value, body = m + "\n\n— " + (n || "Anonymous");
+    if (MX.hasEmail()) location.href = "mailto:" + SITE.email + "?subject=" + encodeURIComponent(s) + "&body=" + encodeURIComponent(body);
+    else {
+      var l = MX.waLink(s + "\n" + body);
+      if (l) window.open(l, "_blank", "noopener"); else err.textContent = "No contact method is configured yet.";
+    }
+  };
+})();
+</script>
+</body>
+</html>

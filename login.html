@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign In – MOVIXA STREAM</title>
+<meta name="theme-color" content="#07070b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="nav solid" id="nav">
+  <a class="logo" href="/">MOVIXA<span> STREAM</span></a>
+  <div class="sp"></div>
+  <a class="btn s sm" href="browse.html">Continue as Guest</a>
+</header>
+
+<main class="authwrap">
+  <div class="authcard">
+    <h1 id="ttl">Welcome back</h1>
+    <p class="sub" id="sub">Sign in to access your list and history.</p>
+    <div class="seg"><button id="tIn" class="on" type="button">Sign In</button><button id="tUp" type="button">Create Account</button></div>
+    <div id="f">
+      <div class="fld" id="nameBox" hidden><label for="name">Full name</label><input id="name" autocomplete="name" placeholder="Your name"></div>
+      <div class="fld"><label for="email">Email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+      <div class="fld"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" placeholder="At least 6 characters"></div>
+      <div class="err" id="err" role="alert"></div>
+      <button class="btn p" id="go" type="button">Sign In</button>
+    </div>
+    <p class="note">Accounts are stored securely on this device only. By continuing you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.</p>
+  </div>
+</main>
+
+<footer class="foot" id="siteFooter"></footer>
+<script src="js/config.js"></script>
+<script src="js/common.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/layout.js"></script>
+<script>
+(function () {
+  if (Auth.current()) { location.replace("browse.html"); return; }
+  var mode = "in", $ = function (s) { return document.querySelector(s); };
+  function setMode(m) {
+    mode = m;
+    $("#tIn").classList.toggle("on", m === "in"); $("#tUp").classList.toggle("on", m === "up");
+    $("#nameBox").hidden = m === "in";
+    $("#ttl").textContent = m === "in" ? "Welcome back" : "Create your account";
+    $("#sub").textContent = m === "in" ? "Sign in to access your list and history." : "Free forever. Your guest list will be kept.";
+    $("#go").textContent = m === "in" ? "Sign In" : "Create Account";
+    $("#pw").autocomplete = m === "in" ? "current-password" : "new-password";
+    $("#err").textContent = "";
+  }
+  $("#tIn").onclick = function () { setMode("in"); };
+  $("#tUp").onclick = function () { setMode("up"); };
+  async function submit() {
+    var btn = $("#go"); $("#err").textContent = ""; btn.disabled = true;
+    try {
+      if (mode === "in") await Auth.login($("#email").value, $("#pw").value);
+      else await Auth.signup($("#name").value, $("#email").value, $("#pw").value);
+      location.href = "browse.html";
+    } catch (e) { $("#err").textContent = e.message; btn.disabled = false; }
+  }
+  $("#go").onclick = submit;
+  document.addEventListener("keydown", function (e) { if (e.key === "Enter") submit(); });
+  if (location.hash === "#signup") setMode("up");
+})();
+</script>
+</body>
+</html>

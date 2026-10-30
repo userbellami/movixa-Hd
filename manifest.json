@@ -1,0 +1,10 @@
+{
+  "name": "MOVIXA STREAM",
+  "short_name": "MOVIXA",
+  "description": "Discover movies and TV shows, watch trailers, find where to stream.",
+  "start_url": "/browse.html",
+  "display": "standalone",
+  "background_color": "#07070b",
+  "theme_color": "#07070b",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
